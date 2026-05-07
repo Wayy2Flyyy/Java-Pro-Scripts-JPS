@@ -23,7 +23,7 @@ Location: `RockExe/`
 - Java Development Kit (JDK) 8 or newer
 - A desktop environment capable of showing Java Swing windows
 
-## Project Structure
+None.
 
 ```text
 ButtonExe/
