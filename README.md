@@ -1,6 +1,6 @@
 # Java Pro Scripts - Beginner Swing Games
 
-Version: **1.1.0**
+Version: **1.2.0**
 
 This repository contains two small, funny Java Swing desktop games. They are intentionally lightweight and beginner-friendly: no Maven, no Gradle, no external libraries, and no online features.
 
