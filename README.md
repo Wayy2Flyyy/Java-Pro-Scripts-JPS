@@ -1,65 +1,65 @@
-# Rock.exe & Button.exe
+# Java Pro Scripts - Beginner Swing Games
 
-Two simple Java Swing games built with plain Java.
+Version: **1.1.0**
+
+This repository contains two small, funny Java Swing desktop games. They are intentionally lightweight and beginner-friendly: no Maven, no Gradle, no external libraries, and no online features.
 
 ## Games
 
-**Rock.exe**  
-A pet rock simulator with stats, action buttons, random messages, mood changes, and a shake animation.
+### Button.exe
 
-**Button.exe**  
-A chaotic one-button game with score, clicks, random button movement, messages, text changes, and background changes.
+A chaotic one-button game. Press the button to earn points, increase the click counter, move the button, change the background, and receive suspiciously dramatic messages.
 
-## Packages Used
+Location: `ButtonExe/`
 
-```java
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.Random;
-```
+### Rock.exe
 
-## Dependencies
+A deeply serious pet rock simulator. Feed, wash, praise, insult, throw, stare at, talk to, or let your rock sleep. Actions update happiness, cleanliness, energy, boredom, and respect.
 
-None.
-
-No Maven, Gradle, JavaFX, external JARs, databases, or APIs are needed.
+Location: `RockExe/`
 
 ## Requirements
 
-Java 17 or newer.
+- Java Development Kit (JDK) 8 or newer
+- A desktop environment capable of showing Java Swing windows
 
-Check your Java version:
+None.
 
-```bash
-java -version
-javac -version
+```text
+ButtonExe/
+├── ButtonExe.java
+├── SaveManager.java
+└── README.md
+
+RockExe/
+├── RockExe.java
+├── SaveManager.java
+└── README.md
+
+README.md
 ```
 
-## How To Run
+## Quick Run
 
-Compile both games:
+Open a terminal in one of the game folders, compile all Java files, then run the main class.
 
 ```bash
+cd ButtonExe
 javac *.java
-```
-
-Run Button.exe:
-
-```bash
 java ButtonExe
 ```
 
-Run Rock.exe:
-
 ```bash
+cd RockExe
+javac *.java
 java RockExe
 ```
 
-## Version
+## Save Files
 
-v0.1.0
+Both games save tiny `.properties` files under your user home directory in a `.jps-games` folder:
 
-## Author
+- Button.exe saves the high score.
+- Rock.exe saves the rock's current stats.
 
-Daniel
+If saving fails because of permissions, the games continue running and print a warning to the terminal.
