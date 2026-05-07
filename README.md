@@ -1,22 +1,65 @@
 # Rock.exe & Button.exe
 
-This repository contains two simple Java Swing desktop games:
+Two simple Java Swing games built with plain Java.
 
-1. **Rock.exe** — a funny pet rock simulator.
-2. **Button.exe** — a chaotic one-button clicking game.
+## Games
 
-Both projects are built using standard Java only. No external packages, frameworks, or libraries are required.
+**Rock.exe**  
+A pet rock simulator with stats, action buttons, random messages, mood changes, and a shake animation.
 
----
+**Button.exe**  
+A chaotic one-button game with score, clicks, random button movement, messages, text changes, and background changes.
 
-## Current Java Packages Used
-
-The current code only uses built-in Java packages.
-
-### Shared Packages
+## Packages Used
 
 ```java
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Random;
+```
+
+## Dependencies
+
+None.
+
+No Maven, Gradle, JavaFX, external JARs, databases, or APIs are needed.
+
+## Requirements
+
+Java 17 or newer.
+
+Check your Java version:
+
+```bash
+java -version
+javac -version
+```
+
+## How To Run
+
+Compile both games:
+
+```bash
+javac *.java
+```
+
+Run Button.exe:
+
+```bash
+java ButtonExe
+```
+
+Run Rock.exe:
+
+```bash
+java RockExe
+```
+
+## Version
+
+v0.1.0
+
+## Author
+
+Daniel
