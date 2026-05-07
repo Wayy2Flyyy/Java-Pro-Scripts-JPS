@@ -1,31 +1,22 @@
-# Button.exe
+# Rock.exe & Button.exe
 
-**Button.exe** is a simple, chaotic Java desktop game built with Java Swing.
+This repository contains two simple Java Swing desktop games:
 
-The game starts with one button. The player is told not to press it. Every click triggers random effects such as button movement, score changes, background colour changes, button text changes, and strange messages.
+1. **Rock.exe** — a funny pet rock simulator.
+2. **Button.exe** — a chaotic one-button clicking game.
 
-The project is designed to be simple, fun, and expandable.
-
----
-
-## Features
-
-- Java Swing desktop UI
-- One-button chaotic gameplay
-- Random score rewards
-- Random button movement
-- Random background colour changes
-- Random button messages
-- Click counter
-- Simple clean interface
-- Easy to expand with new systems
+Both projects are built using standard Java only. No external packages, frameworks, or libraries are required.
 
 ---
 
-## Project Structure
+## Current Java Packages Used
 
-```text
-ButtonExe/
-│
-├── ButtonExe.java
-└── README.md
+The current code only uses built-in Java packages.
+
+### Shared Packages
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.Random;
