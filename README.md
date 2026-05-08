@@ -1,65 +1,130 @@
-# Java Pro Scripts - Beginner Swing Games
+# Reflex.exe
 
-Version: **1.2.0**
+A simple Java Swing reaction-time minigame that tests how quickly keyboard and mouse inputs register inside the game.
 
-This repository contains two small, funny Java Swing desktop games. They are intentionally lightweight and beginner-friendly: no Maven, no Gradle, no external libraries, and no online features.
+The game measures the time between the **GO!** prompt appearing and Java receiving the correct input event.
 
-## Games
+## What It Tests
 
-### Button.exe
+Reflex.exe includes two test modes:
 
-A chaotic one-button game. Press the button to earn points, increase the click counter, move the button, change the background, and receive suspiciously dramatic messages.
+- **Keyboard Test** — press `SPACE` when the screen says `GO!`
+- **Mouse Test** — left-click when the screen says `GO!`
 
-Location: `ButtonExe/`
+The result is shown in milliseconds.
 
-### Rock.exe
+## Important Accuracy Note
 
-A deeply serious pet rock simulator. Feed, wash, praise, insult, throw, stare at, talk to, or let your rock sleep. Actions update happiness, cleanliness, energy, boredom, and respect.
+This does **not** measure perfect physical hardware latency.
 
-Location: `RockExe/`
+It measures how fast the Java game receives your input after the visual prompt appears. Timing uses:
 
-## Requirements
+```java
+System.nanoTime()
+```
 
-- Java Development Kit (JDK) 8 or newer
-- A desktop environment capable of showing Java Swing windows
+The result is converted into milliseconds for display.
+
+## Features
+
+- Keyboard reaction test
+- Mouse click reaction test
+- Random wait delay before `GO!`
+- False-start detection
+- Millisecond result display
+- Best keyboard time
+- Best mouse time
+- Average keyboard time
+- Average mouse time
+- Attempt counter
+- Reset stats button
+- Simple dark Java Swing UI
+
+## Packages Used
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Random;
+```
+
+## Dependencies
 
 None.
 
+No Maven, Gradle, JavaFX, external JARs, databases, or online APIs are required.
+
+## Requirements
+
+Java 17 or newer is recommended.
+
+Check Java:
+
+```bash
+java -version
+javac -version
+```
+
+## File Structure
+
 ```text
-ButtonExe/
-├── ButtonExe.java
-├── SaveManager.java
+ReflexExe/
+├── ReflexExe.java
 └── README.md
-
-RockExe/
-├── RockExe.java
-├── SaveManager.java
-└── README.md
-
-README.md
 ```
 
-## Quick Run
+## How To Run
 
-Open a terminal in one of the game folders, compile all Java files, then run the main class.
+Compile:
 
 ```bash
-cd ButtonExe
-javac *.java
-java ButtonExe
+javac ReflexExe.java
 ```
+
+Run:
 
 ```bash
-cd RockExe
-javac *.java
-java RockExe
+java ReflexExe
 ```
 
-## Save Files
+## Controls
 
-Both games save tiny `.properties` files under your user home directory in a `.jps-games` folder:
+```text
+Keyboard Test: SPACE
+Mouse Test: Left Mouse Click
+```
 
-- Button.exe saves the high score.
-- Rock.exe saves the rock's current stats.
+## Result Ratings
 
-If saving fails because of permissions, the games continue running and print a warning to the terminal.
+The game gives a basic reaction rating after each attempt:
+
+```text
+Under 120 ms: Extremely fast
+Under 180 ms: Very fast
+Under 250 ms: Solid
+Under 350 ms: Average
+350 ms or higher: Slow
+```
+
+## Current Version
+
+```text
+v0.1.0
+```
+
+## Future Ideas
+
+- 10-round test mode
+- Keyboard vs mouse comparison summary
+- Save best times locally
+- Reaction history graph
+- Sound cue mode
+- Visual cue mode
+- Random colour cue mode
+- Accuracy leaderboard
+- Export results to text file
+
+## Author
+
+Daniel
