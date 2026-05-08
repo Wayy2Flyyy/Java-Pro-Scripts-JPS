@@ -1,44 +1,63 @@
-# Reflex.exe
+# Java Mini Games
 
-A simple Java Swing reaction-time minigame that tests how quickly keyboard and mouse inputs register inside the game.
+A small collection of simple Java Swing minigames built with plain Java.
 
-The game measures the time between the **GO!** prompt appearing and Java receiving the correct input event.
+Current games:
 
-## What It Tests
+- **Rock.exe**
+- **Button.exe**
+- **Reflex.exe**
 
-Reflex.exe includes two test modes:
+No external libraries are required.
 
-- **Keyboard Test** — press `SPACE` when the screen says `GO!`
-- **Mouse Test** — left-click when the screen says `GO!`
+---
 
-The result is shown in milliseconds.
+## Games
 
-## Important Accuracy Note
+### Rock.exe
 
-This does **not** measure perfect physical hardware latency.
+A funny pet rock simulator where you interact with a rock using different actions.
 
-It measures how fast the Java game receives your input after the visual prompt appears. Timing uses:
+Features:
 
-```java
-System.nanoTime()
-```
+- Rock stats
+- Action buttons
+- Random messages
+- Mood changes
+- Basic shake animation
 
-The result is converted into milliseconds for display.
+---
 
-## Features
+### Button.exe
 
-- Keyboard reaction test
-- Mouse click reaction test
-- Random wait delay before `GO!`
+A chaotic one-button game where every click causes random effects.
+
+Features:
+
+- Score counter
+- Click counter
+- Random button movement
+- Random messages
+- Random button text
+- Random background changes
+
+---
+
+### Reflex.exe
+
+A reaction-time minigame that tests how quickly keyboard and mouse inputs register inside the game.
+
+Features:
+
+- Keyboard test using `SPACE`
+- Mouse test using left click
+- Random wait delay
 - False-start detection
-- Millisecond result display
-- Best keyboard time
-- Best mouse time
-- Average keyboard time
-- Average mouse time
-- Attempt counter
+- Reaction time in milliseconds
+- Best and average results
 - Reset stats button
-- Simple dark Java Swing UI
+
+---
 
 ## Packages Used
 
@@ -49,11 +68,21 @@ import java.awt.event.*;
 import java.util.Random;
 ```
 
+Some files may also use:
+
+```java
+import java.awt.event.ActionEvent;
+```
+
+---
+
 ## Dependencies
 
 None.
 
 No Maven, Gradle, JavaFX, external JARs, databases, or online APIs are required.
+
+---
 
 ## Requirements
 
@@ -66,64 +95,73 @@ java -version
 javac -version
 ```
 
+---
+
 ## File Structure
 
 ```text
-ReflexExe/
+JavaMiniGames/
+├── RockExe.java
+├── ButtonExe.java
 ├── ReflexExe.java
 └── README.md
 ```
 
-## How To Run
+---
 
-Compile:
+## How To Compile
+
+Compile all games:
 
 ```bash
-javac ReflexExe.java
+javac *.java
 ```
 
-Run:
+---
+
+## How To Run
+
+Run Rock.exe:
+
+```bash
+java RockExe
+```
+
+Run Button.exe:
+
+```bash
+java ButtonExe
+```
+
+Run Reflex.exe:
 
 ```bash
 java ReflexExe
 ```
 
-## Controls
+---
 
-```text
-Keyboard Test: SPACE
-Mouse Test: Left Mouse Click
+## Notes
+
+Reflex.exe uses:
+
+```java
+System.nanoTime()
 ```
 
-## Result Ratings
+This gives accurate timing inside Java, then converts the result into milliseconds.
 
-The game gives a basic reaction rating after each attempt:
+It does not measure perfect physical hardware latency. It measures the time between the game showing `GO!` and Java receiving the keyboard or mouse input.
 
-```text
-Under 120 ms: Extremely fast
-Under 180 ms: Very fast
-Under 250 ms: Solid
-Under 350 ms: Average
-350 ms or higher: Slow
-```
+---
 
-## Current Version
+## Version
 
 ```text
 v0.1.0
 ```
 
-## Future Ideas
-
-- 10-round test mode
-- Keyboard vs mouse comparison summary
-- Save best times locally
-- Reaction history graph
-- Sound cue mode
-- Visual cue mode
-- Random colour cue mode
-- Accuracy leaderboard
-- Export results to text file
+---
 
 ## Author
 
