@@ -1,6 +1,6 @@
 # Java Mini Games
 
-A small collection of Java Swing games and tools built with plain Java.
+A small collection of Java Swing games, tools, and learning templates built with plain Java.
 
 This project is designed for learning Java through simple, fun, expandable projects.
 
@@ -11,6 +11,7 @@ This project is designed for learning Java through simple, fun, expandable proje
 - `ReflexExe.java`
 - `GameTemplate.java`
 - `FunctionsExe.java`
+- `CalculatorExe.java`
 
 No external libraries are required.
 
@@ -161,6 +162,59 @@ java FunctionsExe
 
 ---
 
+## Calculator.exe
+
+A modern Java Swing scientific calculator with a dark glass-style interface.
+
+### Features
+
+- Modern glass-style UI
+- Basic calculator functions
+- Scientific functions
+- Brackets
+- Powers
+- Square root
+- Reciprocal
+- Percentage
+- Positive/negative toggle
+- Constants `π` and `e`
+- `Ans` memory value
+- EXP scientific notation input
+- Keyboard support
+- Custom expression parser
+- No external libraries
+
+### Supported Functions
+
+```text
+sin()
+cos()
+tan()
+log()
+ln()
+sqrt()
+abs()
+```
+
+### Supported Operators
+
+```text
++
+-
+*
+/
+%
+^
+```
+
+### Run
+
+```bash
+java CalculatorExe
+```
+
+---
+
 ## Packages Used
 
 Most files use built-in Java packages such as:
@@ -173,9 +227,11 @@ import java.util.Random;
 import java.util.ArrayList;
 ```
 
-FunctionsExe may also use:
+Some files may also use:
 
 ```java
+import javax.swing.border.EmptyBorder;
+import java.text.DecimalFormat;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -226,6 +282,7 @@ JavaMiniGames/
 ├── ReflexExe.java
 ├── GameTemplate.java
 ├── FunctionsExe.java
+├── CalculatorExe.java
 └── README.md
 ```
 
@@ -261,11 +318,15 @@ java GameTemplate
 java FunctionsExe
 ```
 
+```bash
+java CalculatorExe
+```
+
 ---
 
 ## Purpose
 
-This project is made to practise Java fundamentals through small game and utility projects.
+This project is made to practise Java fundamentals through small game, app, and utility projects.
 
 It covers:
 
@@ -282,6 +343,8 @@ It covers:
 - Config-based design
 - Utility functions
 - File saving/loading basics
+- Scientific calculator logic
+- Expression parsing
 - Beginner-friendly Java structure
 
 ---
@@ -289,7 +352,7 @@ It covers:
 ## Version
 
 ```text
-v0.3.0
+v0.4.0
 ```
 
 ---
