@@ -1,6 +1,6 @@
 # Java Mini Games
 
-A small collection of Java Swing games, tools, and learning templates built with plain Java.
+A collection of Java Swing games, tools, templates, and small apps built with plain Java.
 
 This project is designed for learning Java through simple, fun, expandable projects.
 
@@ -12,6 +12,8 @@ This project is designed for learning Java through simple, fun, expandable proje
 - `GameTemplate.java`
 - `FunctionsExe.java`
 - `CalculatorExe.java`
+- `ManPacExe.java`
+- `RudeChatBotExe.java`
 
 No external libraries are required.
 
@@ -129,7 +131,7 @@ java GameTemplate
 
 ## Functions.exe
 
-A Java utility toolkit file filled with reusable functions for games, apps, and learning projects.
+A Java utility toolkit filled with reusable functions for games, apps, and learning projects.
 
 It also includes a small demo window so you can test the functions.
 
@@ -215,27 +217,133 @@ java CalculatorExe
 
 ---
 
+## ManPac.exe
+
+An original Java maze-chase minigame inspired by classic arcade movement and pellet collection.
+
+This is not an official Pac-Man clone and uses no copyrighted assets.
+
+### Features
+
+- Maze movement
+- Pellet collection
+- Power orbs
+- Enemy hunters
+- Hunter chase/scatter behaviour
+- Power mode
+- Eaten hunter return state
+- Combo scoring
+- Bonus fruit
+- Lives system
+- Score and high score
+- Level progression
+- Pause system
+- Restart system
+- WASD and arrow key movement
+- Modern dark arcade-style UI
+
+### Controls
+
+```text
+WASD / Arrow Keys = Move
+P = Pause
+R = Restart
+```
+
+### Run
+
+```bash
+java ManPacExe
+```
+
+---
+
+## RudeChat Bot.exe
+
+A local Java Swing chatbot simulator that detects user message intent and generates random rude-style replies.
+
+This is a local template only. It does not connect to Discord, websites, APIs, or any live platform.
+
+### Features
+
+- Incoming message analyser
+- Intent detection
+- Random reply generation
+- Conversation memory
+- Follow-up handling
+- Mixed message detection
+- Aggressive nonsense greeting detection
+- Rude fallback replies
+- Copy reply button
+- Copy analysis button
+- Simulated user messages
+- Clear/reset conversation button
+
+### Detects
+
+```text
+Greetings
+Random openers
+Swearing / frustration
+Bug reports
+Support requests
+Application / join requests
+Payment / price questions
+Discord / link questions
+Event / schedule questions
+Thanks / appreciation
+Slang / casual messages
+Common general words
+Unknown messages
+Mixed/confused messages
+Follow-up messages
+```
+
+### Example Messages
+
+```text
+hi
+quick question
+fuck mate hi
+this menu is broken wtf
+how do i apply?
+discord invite expired
+refund this shit
+banana microwave purple chair
+```
+
+### Run
+
+```bash
+java RudeChatBotExe
+```
+
+---
+
 ## Packages Used
 
 Most files use built-in Java packages such as:
 
 ```java
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.datatransfer.StringSelection;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 ```
 
 Some files may also use:
 
 ```java
-import javax.swing.border.EmptyBorder;
 import java.text.DecimalFormat;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.List;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 ```
 
 All packages are built into Java.
@@ -283,6 +391,8 @@ JavaMiniGames/
 ├── GameTemplate.java
 ├── FunctionsExe.java
 ├── CalculatorExe.java
+├── ManPacExe.java
+├── RudeChatBotExe.java
 └── README.md
 ```
 
@@ -322,11 +432,19 @@ java FunctionsExe
 java CalculatorExe
 ```
 
+```bash
+java ManPacExe
+```
+
+```bash
+java RudeChatBotExe
+```
+
 ---
 
 ## Purpose
 
-This project is made to practise Java fundamentals through small game, app, and utility projects.
+This project is made to practise Java fundamentals through small game, app, chatbot, and utility projects.
 
 It covers:
 
@@ -345,6 +463,11 @@ It covers:
 - File saving/loading basics
 - Scientific calculator logic
 - Expression parsing
+- Maze movement
+- Enemy AI
+- Chatbot intent detection
+- Random reply systems
+- Conversation memory
 - Beginner-friendly Java structure
 
 ---
@@ -352,7 +475,7 @@ It covers:
 ## Version
 
 ```text
-v0.4.0
+v0.5.0
 ```
 
 ---
