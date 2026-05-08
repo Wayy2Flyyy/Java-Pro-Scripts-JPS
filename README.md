@@ -1,15 +1,16 @@
 # Java Mini Games
 
-A small collection of simple Java Swing games built with plain Java.
+A small collection of Java Swing games and tools built with plain Java.
 
-This project is designed for learning Java through small, fun, expandable games.
+This project is designed for learning Java through simple, fun, expandable projects.
 
-## Current Games
+## Current Files
 
-- **Rock.exe**
-- **Button.exe**
-- **Reflex.exe**
-- **GameTemplate**
+- `RockExe.java`
+- `ButtonExe.java`
+- `ReflexExe.java`
+- `GameTemplate.java`
+- `FunctionsExe.java`
 
 No external libraries are required.
 
@@ -92,7 +93,7 @@ java ReflexExe
 
 ## GameTemplate
 
-A configurable Java game template made for learning and creating your own small games.
+A configurable Java game template made for learning and creating your own small 2D games.
 
 Most of the game can be changed from the config section at the top of the file:
 
@@ -116,7 +117,6 @@ static final class CFG {
 - Debug mode
 - Custom colours
 - Custom controls
-- Easy beginner-friendly structure
 
 ### Run
 
@@ -126,9 +126,44 @@ java GameTemplate
 
 ---
 
+## Functions.exe
+
+A Java utility toolkit file filled with reusable functions for games, apps, and learning projects.
+
+It also includes a small demo window so you can test the functions.
+
+### Function Categories
+
+- Maths
+- Random utilities
+- Text helpers
+- Time helpers
+- File saving/loading
+- 2D game helpers
+- Stats helpers
+- Colour helpers
+- UI helpers
+- Debug helpers
+
+### Example Usage
+
+```java
+int health = FunctionsExe.Fn.Maths.clamp(150, 0, 100);
+String title = FunctionsExe.Fn.Text.titleCase("rock fella");
+boolean lucky = FunctionsExe.Fn.Randoms.chancePercent(25);
+```
+
+### Run
+
+```bash
+java FunctionsExe
+```
+
+---
+
 ## Packages Used
 
-Most games use built-in Java packages such as:
+Most files use built-in Java packages such as:
 
 ```java
 import javax.swing.*;
@@ -138,7 +173,16 @@ import java.util.Random;
 import java.util.ArrayList;
 ```
 
-Some files may only use part of these packages.
+FunctionsExe may also use:
+
+```java
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.List;
+```
+
+All packages are built into Java.
 
 ---
 
@@ -181,12 +225,13 @@ JavaMiniGames/
 ├── ButtonExe.java
 ├── ReflexExe.java
 ├── GameTemplate.java
+├── FunctionsExe.java
 └── README.md
 ```
 
 ---
 
-## Compile All Games
+## Compile Everything
 
 ```bash
 javac *.java
@@ -194,7 +239,7 @@ javac *.java
 
 ---
 
-## Run Each Game
+## Run Each Project
 
 ```bash
 java RockExe
@@ -212,32 +257,39 @@ java ReflexExe
 java GameTemplate
 ```
 
+```bash
+java FunctionsExe
+```
+
 ---
 
 ## Purpose
 
-This project is made to practise Java fundamentals through simple game development.
+This project is made to practise Java fundamentals through small game and utility projects.
 
 It covers:
 
 - Java Swing windows
 - Drawing with `Graphics2D`
+- Buttons and labels
 - Keyboard input
 - Mouse input
 - Timers and game loops
+- Random events
 - Collision detection
 - Score systems
 - Health systems
-- Random events
-- Basic UI design
-- Beginner-friendly game structure
+- Config-based design
+- Utility functions
+- File saving/loading basics
+- Beginner-friendly Java structure
 
 ---
 
 ## Version
 
 ```text
-v0.2.0
+v0.3.0
 ```
 
 ---
