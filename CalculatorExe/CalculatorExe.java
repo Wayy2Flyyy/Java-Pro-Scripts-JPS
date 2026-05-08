@@ -6,15 +6,13 @@ import java.text.DecimalFormat;
 
 public class CalculatorExe extends JFrame {
 
-    private JTextField display;
-    private JLabel topLabel;
+    private JTextField displayField;
+    private JLabel expressionLabel;
 
-    private double firstValue = 0;
-    private String operator = "";
-    private boolean startNewNumber = true;
-    private boolean hasDecimal = false;
+    private String expression = "";
+    private double lastAnswer = 0.0;
 
-    private final DecimalFormat format = new DecimalFormat("0.##########");
+    private final DecimalFormat resultFormat = new DecimalFormat("0.############");
 
     public CalculatorExe() {
         setupWindow();
@@ -23,267 +21,256 @@ public class CalculatorExe extends JFrame {
 
     private void setupWindow() {
         setTitle("Calculator.exe");
-        setSize(420, 640);
+        setSize(520, 820);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+        setContentPane(new GradientPanel());
     }
 
     private void setupUI() {
-        JPanel root = new JPanel(new BorderLayout(0, 0));
-        root.setBackground(new Color(14, 14, 18));
-        root.setBorder(new EmptyBorder(16, 16, 16, 16));
-        setContentPane(root);
+        JPanel root = (JPanel) getContentPane();
+        root.setLayout(new BorderLayout());
+        root.setBorder(new EmptyBorder(18, 18, 18, 18));
 
-        JPanel topPanel = new JPanel(new BorderLayout(0, 8));
-        topPanel.setOpaque(false);
+        JPanel topWrap = new JPanel(new BorderLayout());
+        topWrap.setOpaque(false);
 
         JLabel title = new JLabel("Calculator.exe");
+        title.setFont(new Font("Segoe UI", Font.BOLD, 30));
         title.setForeground(Color.WHITE);
-        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        topPanel.add(title, BorderLayout.NORTH);
+        title.setBorder(new EmptyBorder(0, 6, 14, 6));
+        topWrap.add(title, BorderLayout.NORTH);
 
-        topLabel = new JLabel(" ");
-        topLabel.setForeground(new Color(130, 130, 145));
-        topLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        topLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        topPanel.add(topLabel, BorderLayout.CENTER);
+        RoundedPanel displayPanel = new RoundedPanel(28, new Color(255, 255, 255, 26), new Color(255, 255, 255, 40));
+        displayPanel.setLayout(new BorderLayout(0, 8));
+        displayPanel.setBorder(new EmptyBorder(18, 18, 18, 18));
 
-        display = new JTextField("0");
-        display.setEditable(false);
-        display.setHorizontalAlignment(SwingConstants.RIGHT);
-        display.setBackground(new Color(22, 22, 28));
-        display.setForeground(Color.WHITE);
-        display.setCaretColor(Color.WHITE);
-        display.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(60, 60, 78), 1),
-                new EmptyBorder(18, 18, 18, 18)
-        ));
-        display.setFont(new Font("Segoe UI", Font.BOLD, 34));
-        topPanel.add(display, BorderLayout.SOUTH);
+        expressionLabel = new JLabel(" ");
+        expressionLabel.setForeground(new Color(185, 190, 210));
+        expressionLabel.setFont(new Font("Segoe UI", Font.PLAIN, 17));
+        expressionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        root.add(topPanel, BorderLayout.NORTH);
+        displayField = new JTextField("0");
+        displayField.setEditable(false);
+        displayField.setHorizontalAlignment(SwingConstants.RIGHT);
+        displayField.setFont(new Font("Segoe UI", Font.BOLD, 36));
+        displayField.setForeground(Color.WHITE);
+        displayField.setBackground(new Color(0, 0, 0, 0));
+        displayField.setBorder(null);
+        displayField.setOpaque(false);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(5, 4, 12, 12));
-        buttonPanel.setOpaque(false);
-        buttonPanel.setBorder(new EmptyBorder(18, 0, 0, 0));
+        displayPanel.add(expressionLabel, BorderLayout.NORTH);
+        displayPanel.add(displayField, BorderLayout.CENTER);
 
-        addButton(buttonPanel, "C", new Color(95, 55, 55), Color.WHITE, e -> clearAll());
-        addButton(buttonPanel, "DEL", new Color(80, 80, 95), Color.WHITE, e -> deleteLast());
-        addButton(buttonPanel, "%", new Color(80, 80, 95), Color.WHITE, e -> applyPercent());
-        addButton(buttonPanel, "÷", new Color(110, 80, 200), Color.WHITE, e -> setOperator("/"));
+        topWrap.add(displayPanel, BorderLayout.CENTER);
+        root.add(topWrap, BorderLayout.NORTH);
 
-        addButton(buttonPanel, "7", new Color(38, 38, 48), Color.WHITE, e -> appendNumber("7"));
-        addButton(buttonPanel, "8", new Color(38, 38, 48), Color.WHITE, e -> appendNumber("8"));
-        addButton(buttonPanel, "9", new Color(38, 38, 48), Color.WHITE, e -> appendNumber("9"));
-        addButton(buttonPanel, "×", new Color(110, 80, 200), Color.WHITE, e -> setOperator("*"));
+        JPanel buttonGrid = new JPanel(new GridLayout(6, 6, 10, 10));
+        buttonGrid.setOpaque(false);
+        buttonGrid.setBorder(new EmptyBorder(18, 0, 0, 0));
 
-        addButton(buttonPanel, "4", new Color(38, 38, 48), Color.WHITE, e -> appendNumber("4"));
-        addButton(buttonPanel, "5", new Color(38, 38, 48), Color.WHITE, e -> appendNumber("5"));
-        addButton(buttonPanel, "6", new Color(38, 38, 48), Color.WHITE, e -> appendNumber("6"));
-        addButton(buttonPanel, "-", new Color(110, 80, 200), Color.WHITE, e -> setOperator("-"));
+        addButton(buttonGrid, "C", ButtonType.DANGER, e -> clearAll());
+        addButton(buttonGrid, "DEL", ButtonType.SECONDARY, e -> deleteLast());
+        addButton(buttonGrid, "(", ButtonType.SECONDARY, e -> append("("));
+        addButton(buttonGrid, ")", ButtonType.SECONDARY, e -> append(")"));
+        addButton(buttonGrid, "%", ButtonType.SECONDARY, e -> append("%"));
+        addButton(buttonGrid, "÷", ButtonType.OPERATOR, e -> append("/"));
 
-        addButton(buttonPanel, "1", new Color(38, 38, 48), Color.WHITE, e -> appendNumber("1"));
-        addButton(buttonPanel, "2", new Color(38, 38, 48), Color.WHITE, e -> appendNumber("2"));
-        addButton(buttonPanel, "3", new Color(38, 38, 48), Color.WHITE, e -> appendNumber("3"));
-        addButton(buttonPanel, "+", new Color(110, 80, 200), Color.WHITE, e -> setOperator("+"));
+        addButton(buttonGrid, "sin", ButtonType.FUNCTION, e -> append("sin("));
+        addButton(buttonGrid, "cos", ButtonType.FUNCTION, e -> append("cos("));
+        addButton(buttonGrid, "tan", ButtonType.FUNCTION, e -> append("tan("));
+        addButton(buttonGrid, "log", ButtonType.FUNCTION, e -> append("log("));
+        addButton(buttonGrid, "ln", ButtonType.FUNCTION, e -> append("ln("));
+        addButton(buttonGrid, "√", ButtonType.FUNCTION, e -> append("sqrt("));
 
-        addButton(buttonPanel, "±", new Color(80, 80, 95), Color.WHITE, e -> toggleSign());
-        addButton(buttonPanel, "0", new Color(38, 38, 48), Color.WHITE, e -> appendNumber("0"));
-        addButton(buttonPanel, ".", new Color(80, 80, 95), Color.WHITE, e -> appendDecimal());
-        addButton(buttonPanel, "=", new Color(70, 140, 255), Color.WHITE, e -> calculateResult());
+        addButton(buttonGrid, "7", ButtonType.NORMAL, e -> append("7"));
+        addButton(buttonGrid, "8", ButtonType.NORMAL, e -> append("8"));
+        addButton(buttonGrid, "9", ButtonType.NORMAL, e -> append("9"));
+        addButton(buttonGrid, "×", ButtonType.OPERATOR, e -> append("*"));
+        addButton(buttonGrid, "x²", ButtonType.FUNCTION, e -> squareCurrent());
+        addButton(buttonGrid, "xʸ", ButtonType.FUNCTION, e -> append("^"));
 
-        root.add(buttonPanel, BorderLayout.CENTER);
+        addButton(buttonGrid, "4", ButtonType.NORMAL, e -> append("4"));
+        addButton(buttonGrid, "5", ButtonType.NORMAL, e -> append("5"));
+        addButton(buttonGrid, "6", ButtonType.NORMAL, e -> append("6"));
+        addButton(buttonGrid, "-", ButtonType.OPERATOR, e -> append("-"));
+        addButton(buttonGrid, "1/x", ButtonType.FUNCTION, e -> reciprocalCurrent());
+        addButton(buttonGrid, "π", ButtonType.FUNCTION, e -> append("pi"));
+
+        addButton(buttonGrid, "1", ButtonType.NORMAL, e -> append("1"));
+        addButton(buttonGrid, "2", ButtonType.NORMAL, e -> append("2"));
+        addButton(buttonGrid, "3", ButtonType.NORMAL, e -> append("3"));
+        addButton(buttonGrid, "+", ButtonType.OPERATOR, e -> append("+"));
+        addButton(buttonGrid, "Ans", ButtonType.FUNCTION, e -> append(formatNumber(lastAnswer)));
+        addButton(buttonGrid, "e", ButtonType.FUNCTION, e -> append("e"));
+
+        addButton(buttonGrid, "±", ButtonType.SECONDARY, e -> toggleSign());
+        addButton(buttonGrid, "0", ButtonType.NORMAL, e -> append("0"));
+        addButton(buttonGrid, ".", ButtonType.NORMAL, e -> append("."));
+        addButton(buttonGrid, "EXP", ButtonType.FUNCTION, e -> append("E"));
+        addButton(buttonGrid, "abs", ButtonType.FUNCTION, e -> append("abs("));
+        addButton(buttonGrid, "=", ButtonType.EQUALS, e -> evaluate());
+
+        root.add(buttonGrid, BorderLayout.CENTER);
+
+        bindKeyboard();
     }
 
-    private void addButton(JPanel panel, String text, Color bg, Color fg, java.awt.event.ActionListener action) {
-        JButton button = new JButton(text);
-        button.setFocusPainted(false);
-        button.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        button.setBackground(bg);
-        button.setForeground(fg);
-        button.setBorder(BorderFactory.createLineBorder(new Color(65, 65, 85), 1));
-        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        button.addActionListener(action);
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent e) {
-                button.setBackground(brighten(bg, 0.10));
-            }
+    private void bindKeyboard() {
+        JRootPane rootPane = getRootPane();
+        bindKey(rootPane, "0", () -> append("0"));
+        bindKey(rootPane, "1", () -> append("1"));
+        bindKey(rootPane, "2", () -> append("2"));
+        bindKey(rootPane, "3", () -> append("3"));
+        bindKey(rootPane, "4", () -> append("4"));
+        bindKey(rootPane, "5", () -> append("5"));
+        bindKey(rootPane, "6", () -> append("6"));
+        bindKey(rootPane, "7", () -> append("7"));
+        bindKey(rootPane, "8", () -> append("8"));
+        bindKey(rootPane, "9", () -> append("9"));
+        bindKey(rootPane, ".", () -> append("."));
+        bindKey(rootPane, "+", () -> append("+"));
+        bindKey(rootPane, "-", () -> append("-"));
+        bindKey(rootPane, "*", () -> append("*"));
+        bindKey(rootPane, "/", () -> append("/"));
+        bindKey(rootPane, "ENTER", this::evaluate);
+        bindKey(rootPane, "BACK_SPACE", this::deleteLast);
+        bindKey(rootPane, "ESCAPE", this::clearAll);
+        bindKey(rootPane, "OPEN_BRACKET", () -> append("("));
+        bindKey(rootPane, "CLOSE_BRACKET", () -> append(")"));
+    }
 
+    private void bindKey(JRootPane rootPane, String keyStroke, Runnable action) {
+        String actionName = "action_" + keyStroke + "_" + Math.random();
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(keyStroke), actionName);
+        rootPane.getActionMap().put(actionName, new AbstractAction() {
             @Override
-            public void mouseExited(java.awt.event.MouseEvent e) {
-                button.setBackground(bg);
+            public void actionPerformed(ActionEvent e) {
+                action.run();
             }
         });
+    }
+
+    private void addButton(JPanel panel, String text, ButtonType type, java.awt.event.ActionListener action) {
+        ModernButton button = new ModernButton(text, type);
+        button.addActionListener(action);
         panel.add(button);
     }
 
-    private Color brighten(Color color, double factor) {
-        int r = (int) Math.min(255, color.getRed() + (255 - color.getRed()) * factor);
-        int g = (int) Math.min(255, color.getGreen() + (255 - color.getGreen()) * factor);
-        int b = (int) Math.min(255, color.getBlue() + (255 - color.getBlue()) * factor);
-        return new Color(r, g, b);
+    private void append(String value) {
+        if (displayField.getText().equals("Error")) {
+            clearAll();
+        }
+
+        expression += value;
+        updateDisplay(false);
     }
 
-    private void appendNumber(String number) {
-        if (startNewNumber) {
-            display.setText(number);
-            startNewNumber = false;
-            hasDecimal = false;
-            return;
-        }
-
-        if (display.getText().equals("0")) {
-            display.setText(number);
-        } else {
-            display.setText(display.getText() + number);
-        }
-    }
-
-    private void appendDecimal() {
-        if (startNewNumber) {
-            display.setText("0.");
-            startNewNumber = false;
-            hasDecimal = true;
-            return;
-        }
-
-        if (!hasDecimal && !display.getText().contains(".")) {
-            display.setText(display.getText() + ".");
-            hasDecimal = true;
-        }
-    }
-
-    private void setOperator(String op) {
-        try {
-            if (!operator.isEmpty() && !startNewNumber) {
-                calculateResult();
-            }
-
-            firstValue = Double.parseDouble(display.getText());
-            operator = op;
-            startNewNumber = true;
-            hasDecimal = false;
-            topLabel.setText(formatNumber(firstValue) + " " + getPrettyOperator(operator));
-        } catch (Exception ex) {
-            showError();
-        }
-    }
-
-    private void calculateResult() {
-        if (operator.isEmpty()) {
-            return;
-        }
-
-        try {
-            double secondValue = Double.parseDouble(display.getText());
-            double result;
-
-            switch (operator) {
-                case "+" -> result = firstValue + secondValue;
-                case "-" -> result = firstValue - secondValue;
-                case "*" -> result = firstValue * secondValue;
-                case "/" -> {
-                    if (secondValue == 0) {
-                        display.setText("Cannot divide by 0");
-                        topLabel.setText("Math error");
-                        operator = "";
-                        startNewNumber = true;
-                        hasDecimal = false;
-                        return;
-                    }
-                    result = firstValue / secondValue;
-                }
-                default -> {
-                    return;
-                }
-            }
-
-            topLabel.setText(formatNumber(firstValue) + " " + getPrettyOperator(operator) + " " + formatNumber(secondValue) + " =");
-            display.setText(formatNumber(result));
-            operator = "";
-            firstValue = result;
-            startNewNumber = true;
-            hasDecimal = display.getText().contains(".");
-        } catch (Exception ex) {
-            showError();
-        }
-    }
-
-    private void applyPercent() {
-        try {
-            double current = Double.parseDouble(display.getText());
-            current = current / 100.0;
-            display.setText(formatNumber(current));
-            startNewNumber = true;
-            hasDecimal = display.getText().contains(".");
-        } catch (Exception ex) {
-            showError();
-        }
-    }
-
-    private void toggleSign() {
-        try {
-            double current = Double.parseDouble(display.getText());
-            current = -current;
-            display.setText(formatNumber(current));
-        } catch (Exception ex) {
-            showError();
-        }
+    private void clearAll() {
+        expression = "";
+        expressionLabel.setText(" ");
+        displayField.setText("0");
     }
 
     private void deleteLast() {
-        if (startNewNumber || display.getText().equals("0")) {
-            return;
-        }
-
-        String text = display.getText();
-
-        if (text.equals("Cannot divide by 0") || text.equals("Error")) {
+        if (displayField.getText().equals("Error")) {
             clearAll();
             return;
         }
 
-        if (text.length() == 1 || (text.length() == 2 && text.startsWith("-"))) {
-            display.setText("0");
-            startNewNumber = true;
-            hasDecimal = false;
+        if (!expression.isEmpty()) {
+            expression = expression.substring(0, expression.length() - 1);
+            updateDisplay(false);
+        }
+    }
+
+    private void toggleSign() {
+        if (expression.isEmpty()) {
+            expression = "-";
+            updateDisplay(false);
             return;
         }
 
-        text = text.substring(0, text.length() - 1);
-        display.setText(text);
-        hasDecimal = text.contains(".");
+        try {
+            double value = ExpressionEvaluator.evaluate(expression);
+            expression = formatNumber(-value);
+            updateDisplay(false);
+        } catch (Exception ex) {
+            expression = "-(" + expression + ")";
+            updateDisplay(false);
+        }
     }
 
-    private void clearAll() {
-        display.setText("0");
-        topLabel.setText(" ");
-        firstValue = 0;
-        operator = "";
-        startNewNumber = true;
-        hasDecimal = false;
+    private void squareCurrent() {
+        if (expression.isEmpty()) {
+            return;
+        }
+        expression = "(" + expression + ")^2";
+        updateDisplay(false);
+    }
+
+    private void reciprocalCurrent() {
+        if (expression.isEmpty()) {
+            expression = "1/(";
+        } else {
+            expression = "1/(" + expression + ")";
+        }
+        updateDisplay(false);
+    }
+
+    private void evaluate() {
+        if (expression.isEmpty()) {
+            return;
+        }
+
+        try {
+            double result = ExpressionEvaluator.evaluate(expression);
+
+            if (Double.isNaN(result) || Double.isInfinite(result)) {
+                throw new IllegalArgumentException("Invalid result");
+            }
+
+            String oldExpression = expression;
+            String formatted = formatNumber(result);
+
+            lastAnswer = result;
+            expressionLabel.setText(prettyExpression(oldExpression) + " =");
+            expression = formatted;
+            displayField.setText(formatted);
+        } catch (Exception ex) {
+            displayField.setText("Error");
+            expressionLabel.setText("Invalid expression");
+            expression = "";
+        }
+    }
+
+    private void updateDisplay(boolean showRawExpression) {
+        if (expression.isEmpty()) {
+            displayField.setText("0");
+            expressionLabel.setText(" ");
+            return;
+        }
+
+        if (showRawExpression) {
+            displayField.setText(expression);
+            expressionLabel.setText(" ");
+        } else {
+            displayField.setText(prettyExpression(expression));
+            expressionLabel.setText("Expression");
+        }
+    }
+
+    private String prettyExpression(String expr) {
+        return expr.replace("*", " × ")
+                .replace("/", " ÷ ");
     }
 
     private String formatNumber(double value) {
-        return format.format(value);
-    }
-
-    private String getPrettyOperator(String op) {
-        return switch (op) {
-            case "/" -> "÷";
-            case "*" -> "×";
-            default -> op;
-        };
-    }
-
-    private void showError() {
-        display.setText("Error");
-        topLabel.setText("Something went wrong");
-        operator = "";
-        startNewNumber = true;
-        hasDecimal = false;
+        if (Math.abs(value) < 1e-12) {
+            value = 0;
+        }
+        return resultFormat.format(value);
     }
 
     public static void main(String[] args) {
@@ -291,5 +278,338 @@ public class CalculatorExe extends JFrame {
             CalculatorExe app = new CalculatorExe();
             app.setVisible(true);
         });
+    }
+
+    enum ButtonType {
+        NORMAL,
+        SECONDARY,
+        FUNCTION,
+        OPERATOR,
+        DANGER,
+        EQUALS
+    }
+
+    static class GradientPanel extends JPanel {
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+            GradientPaint gradient = new GradientPaint(
+                    0, 0, new Color(18, 24, 40),
+                    getWidth(), getHeight(), new Color(42, 26, 70)
+            );
+            g2.setPaint(gradient);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+
+            g2.setColor(new Color(255, 255, 255, 18));
+            g2.fillOval(40, 70, 180, 180);
+            g2.fillOval(300, 150, 220, 220);
+            g2.fillOval(90, 520, 140, 140);
+
+            g2.dispose();
+            super.paintComponent(g);
+        }
+
+        public GradientPanel() {
+            setOpaque(false);
+        }
+    }
+
+    static class RoundedPanel extends JPanel {
+        private final int radius;
+        private final Color backgroundColor;
+        private final Color borderColor;
+
+        RoundedPanel(int radius, Color backgroundColor, Color borderColor) {
+            this.radius = radius;
+            this.backgroundColor = backgroundColor;
+            this.borderColor = borderColor;
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            g2.setColor(backgroundColor);
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+
+            g2.setColor(borderColor);
+            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+
+            g2.dispose();
+            super.paintComponent(g);
+        }
+    }
+
+    static class ModernButton extends JButton {
+        private final ButtonType type;
+        private boolean hovered = false;
+
+        ModernButton(String text, ButtonType type) {
+            super(text);
+            this.type = type;
+
+            setFocusPainted(false);
+            setFont(new Font("Segoe UI", Font.BOLD, 18));
+            setForeground(Color.WHITE);
+            setBorderPainted(false);
+            setContentAreaFilled(false);
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+            addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseEntered(java.awt.event.MouseEvent e) {
+                    hovered = true;
+                    repaint();
+                }
+
+                @Override
+                public void mouseExited(java.awt.event.MouseEvent e) {
+                    hovered = false;
+                    repaint();
+                }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            Color base = getBaseColor();
+            if (hovered) {
+                base = brighten(base, 0.12);
+            }
+
+            g2.setColor(base);
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 22, 22);
+
+            g2.setColor(new Color(255, 255, 255, 35));
+            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 22, 22);
+
+            FontMetrics fm = g2.getFontMetrics(getFont());
+            int textWidth = fm.stringWidth(getText());
+            int textHeight = fm.getAscent();
+
+            g2.setFont(getFont());
+            g2.setColor(getForeground());
+            g2.drawString(getText(), (getWidth() - textWidth) / 2, (getHeight() + textHeight) / 2 - 3);
+
+            g2.dispose();
+        }
+
+        private Color getBaseColor() {
+            return switch (type) {
+                case NORMAL -> new Color(255, 255, 255, 28);
+                case SECONDARY -> new Color(86, 102, 132, 95);
+                case FUNCTION -> new Color(109, 82, 171, 125);
+                case OPERATOR -> new Color(114, 73, 230, 165);
+                case DANGER -> new Color(190, 75, 90, 165);
+                case EQUALS -> new Color(61, 156, 255, 185);
+            };
+        }
+
+        private Color brighten(Color color, double factor) {
+            int r = (int) Math.min(255, color.getRed() + (255 - color.getRed()) * factor);
+            int g = (int) Math.min(255, color.getGreen() + (255 - color.getGreen()) * factor);
+            int b = (int) Math.min(255, color.getBlue() + (255 - color.getBlue()) * factor);
+            return new Color(r, g, b, color.getAlpha());
+        }
+    }
+
+    static class ExpressionEvaluator {
+        public static double evaluate(String expression) {
+            Parser parser = new Parser(expression);
+            double result = parser.parse();
+            if (parser.hasRemaining()) {
+                throw new IllegalArgumentException("Unexpected input");
+            }
+            return result;
+        }
+
+        private static class Parser {
+            private final String input;
+            private int pos = 0;
+
+            Parser(String input) {
+                this.input = input.replace(" ", "");
+            }
+
+            boolean hasRemaining() {
+                skipWhitespace();
+                return pos < input.length();
+            }
+
+            double parse() {
+                return parseExpression();
+            }
+
+            private double parseExpression() {
+                double value = parseTerm();
+
+                while (true) {
+                    if (match('+')) {
+                        value += parseTerm();
+                    } else if (match('-')) {
+                        value -= parseTerm();
+                    } else {
+                        return value;
+                    }
+                }
+            }
+
+            private double parseTerm() {
+                double value = parsePower();
+
+                while (true) {
+                    if (match('*')) {
+                        value *= parsePower();
+                    } else if (match('/')) {
+                        double divisor = parsePower();
+                        if (divisor == 0) {
+                            throw new ArithmeticException("Division by zero");
+                        }
+                        value /= divisor;
+                    } else if (match('%')) {
+                        double divisor = parsePower();
+                        if (divisor == 0) {
+                            throw new ArithmeticException("Modulo by zero");
+                        }
+                        value %= divisor;
+                    } else {
+                        return value;
+                    }
+                }
+            }
+
+            private double parsePower() {
+                double value = parseUnary();
+
+                if (match('^')) {
+                    value = Math.pow(value, parsePower());
+                }
+
+                return value;
+            }
+
+            private double parseUnary() {
+                if (match('+')) {
+                    return parseUnary();
+                }
+                if (match('-')) {
+                    return -parseUnary();
+                }
+
+                if (peekLetter()) {
+                    String identifier = parseIdentifier();
+
+                    if (identifier.equalsIgnoreCase("pi")) {
+                        return Math.PI;
+                    }
+
+                    if (identifier.equalsIgnoreCase("e")) {
+                        return Math.E;
+                    }
+
+                    if (match('(')) {
+                        double argument = parseExpression();
+                        expect(')');
+                        return applyFunction(identifier, argument);
+                    }
+
+                    throw new IllegalArgumentException("Unknown identifier: " + identifier);
+                }
+
+                return parsePrimary();
+            }
+
+            private double parsePrimary() {
+                if (match('(')) {
+                    double value = parseExpression();
+                    expect(')');
+                    return value;
+                }
+
+                return parseNumber();
+            }
+
+            private double parseNumber() {
+                int start = pos;
+                boolean hasDigit = false;
+
+                while (pos < input.length()) {
+                    char c = input.charAt(pos);
+
+                    if (Character.isDigit(c)) {
+                        hasDigit = true;
+                        pos++;
+                    } else if (c == '.') {
+                        pos++;
+                    } else if ((c == 'E' || c == 'e') && hasDigit) {
+                        pos++;
+                        if (pos < input.length() && (input.charAt(pos) == '+' || input.charAt(pos) == '-')) {
+                            pos++;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+                if (start == pos) {
+                    throw new IllegalArgumentException("Expected number at position " + pos);
+                }
+
+                return Double.parseDouble(input.substring(start, pos));
+            }
+
+            private double applyFunction(String function, double value) {
+                return switch (function.toLowerCase()) {
+                    case "sin" -> Math.sin(Math.toRadians(value));
+                    case "cos" -> Math.cos(Math.toRadians(value));
+                    case "tan" -> Math.tan(Math.toRadians(value));
+                    case "log" -> Math.log10(value);
+                    case "ln" -> Math.log(value);
+                    case "sqrt" -> Math.sqrt(value);
+                    case "abs" -> Math.abs(value);
+                    default -> throw new IllegalArgumentException("Unknown function: " + function);
+                };
+            }
+
+            private String parseIdentifier() {
+                int start = pos;
+                while (pos < input.length() && Character.isLetter(input.charAt(pos))) {
+                    pos++;
+                }
+                return input.substring(start, pos);
+            }
+
+            private boolean peekLetter() {
+                return pos < input.length() && Character.isLetter(input.charAt(pos));
+            }
+
+            private boolean match(char expected) {
+                skipWhitespace();
+                if (pos < input.length() && input.charAt(pos) == expected) {
+                    pos++;
+                    return true;
+                }
+                return false;
+            }
+
+            private void expect(char expected) {
+                if (!match(expected)) {
+                    throw new IllegalArgumentException("Expected '" + expected + "'");
+                }
+            }
+
+            private void skipWhitespace() {
+                while (pos < input.length() && Character.isWhitespace(input.charAt(pos))) {
+                    pos++;
+                }
+            }
+        }
     }
 }
